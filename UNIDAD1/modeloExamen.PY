@@ -1,109 +1,114 @@
-# En un gimnasio se necesita un programa que permita ingresar datos de 20 socios Por cada socio, se
-# ingresa:
-# • Nombre completo.
-# • Tarifa Base (10000, no se podrá ingresar otro valor)
-# • Altura (en centímetros, mayor a 100 y menor a 250).
-# • Peso (en kilogramos, mayor a 30 y menor a 200).
-# • Rutina de entrenamiento: Debe elegir entre las opciones "Cardio", "Musculación" o
-# "Funcional".
+contador = 1
+contador_subasta = 0
+usuario_mas_joven_nombre = ""
+usuario_mas_joven_edad = None
+usuario_mas_joven_tipo = ""
+total_publicaciones = 0
+publicaciones_inactivas = 0
+total_edad_subasta = 0
+contador_subasta_publicaciones = 0
+productos_inactivos = 0
+servicios_inactivos = 0
+subastas_inactivos = 0
 
-# Una vez ingresados todos los datos, el programa debe calcular e informar lo siguiente (informar por
-# print):
-# Los socios que realicen:
-# ● Musculación, tendrán un incremento del 10%.
-# ● Cardio, tendrán incremento del 10%.
-# ● Funcional, un descuento del 10%
+while contador <= 10:
+    nombre_usuario = input("Nombre del usuario: ")
 
-# A. Por el número de DNI del alumno: 
-# Terminados en 4 o 5:
-# ● Informar la cantidad total de socios que realizan “Funcional” y su altura es
-# superior a “165”.
-# ● El promedio total recaudado de los socios que realizan “Musculación” y su altura
-# es superior a “110”.
-# ● El nombre y la altura del socio que realiza “Cardio” de menor peso.
-
-
-# Lista para almacenar los datos de los socios
-socios = []
-
-# Ingresar datos de 20 socios
-for i in range(2):  # Cambia el 2 por 20 cuando ingreses los datos para 20 socios
-    print(f"Ingresando datos del socio {i+1}:")
-    socio = {}  # Crear un diccionario para almacenar la información de un socio
-    
-    # Ingresar y almacenar el nombre completo del socio
-    socio['nombre_completo'] = input("Ingrese el nombre completo del socio: ")
-    
-    # La tarifa base es siempre 10000
-    socio['tarifa_base'] = 10000
-    
-    # Ingresar y verificar la altura
     while True:
-        altura = int(input("Ingrese la altura en centímetros (mayor a 100 y menor a 250): "))
-        if 100 < altura < 250:
-            socio['altura'] = altura
+        try:
+            edad_usuario = int(input("Edad del usuario (entre 18 y 100): "))
+            if 18 <= edad_usuario <= 100:
+                break
+            else:
+                print("La edad no es válida, debe estar entre 18 y 100 años.")
+        except ValueError:
+            print("Por favor, ingrese un número entero válido.")
+
+    while True:
+        try:
+            cantidad_productos = int(input("Cantidad de productos (número entero positivo): "))
+            if cantidad_productos > 0:
+                break
+            else:
+                print("Cantidad inválida, debe ser un número entero positivo.")
+        except ValueError:
+            print("Por favor, ingrese un número entero válido.")
+
+    while True:
+        try:
+            numero_publicaciones = int(input("Número de publicaciones (número entero positivo, hasta 1000): "))
+            if 1 <= numero_publicaciones <= 1000:
+                break
+            else:
+                print("Número de publicaciones inválido, debe ser un número entero positivo hasta 1000.")
+        except ValueError:
+            print("Por favor, ingrese un número entero válido.")
+
+    while True:
+        tipo_publicacion = input("Tipo de publicación (producto, servicio, subasta): ").lower()
+        if tipo_publicacion in ["producto", "servicio", "subasta"]:
             break
         else:
-            print("Altura fuera de rango. Intente nuevamente.")
-    
-    # Ingresar y verificar el peso
+            print("Tipo inválido, debe ser 'producto', 'servicio' o 'subasta'.")
+
     while True:
-        peso = int(input("Ingrese el peso en kilogramos (mayor a 30 y menor a 200): "))
-        if 30 < peso < 200:
-            socio['peso'] = peso
+        cuenta_activa = input("¿Cuenta activa? (si/no): ").lower()
+        if cuenta_activa in ["si", "no"]:
             break
         else:
-            print("Peso fuera de rango. Intente nuevamente.")
+            print("Entrada inválida, debe ser 'si' o 'no'.")
+
+    if cuenta_activa == "si" and tipo_publicacion == "subasta" and edad_usuario > 60:
+        contador_subasta += 1
     
-    # Ingresar y verificar la rutina de entrenamiento
-    while True:
-        rutina = input("Ingrese la rutina de entrenamiento (Cardio, Musculación, Funcional): ").capitalize()
-        if rutina in ["Cardio", "Musculación", "Funcional"]:
-            socio['rutina'] = rutina
-            break
-        else:
-            print("Rutina no válida. Intente nuevamente.")
+    if numero_publicaciones < 300:
+        if usuario_mas_joven_edad is None or edad_usuario < usuario_mas_joven_edad:
+            usuario_mas_joven_nombre = nombre_usuario
+            usuario_mas_joven_edad = edad_usuario
+            usuario_mas_joven_tipo = tipo_publicacion
     
-    # Ingresar y verificar el DNI
-    while True:
-        dni = input("Ingrese el número de DNI: ")
-        if dni.isdigit():
-            socio['dni'] = dni
-            break
-        else:
-            print("DNI no válido. Intente nuevamente.")
+    total_publicaciones += numero_publicaciones
+    if cuenta_activa == "no":
+        publicaciones_inactivas += numero_publicaciones
+        if tipo_publicacion == "producto":
+            productos_inactivos += numero_publicaciones
+        elif tipo_publicacion == "servicio":
+            servicios_inactivos += numero_publicaciones
+        elif tipo_publicacion == "subasta":
+            subastas_inactivos += numero_publicaciones
     
-    # Agregar el socio a la lista
-    socios.append(socio)
+    if tipo_publicacion == "subasta":
+        total_edad_subasta += edad_usuario
+        contador_subasta_publicaciones += 1
+    
+    contador += 1
 
-# Calcular el incremento o descuento en la tarifa
-for socio in socios:
-    if socio['rutina'] in ["Cardio", "Musculación"]:
-        socio['tarifa_final'] = socio['tarifa_base'] * 1.10  # Incremento del 10%
-    elif socio['rutina'] == "Funcional":
-        socio['tarifa_final'] = socio['tarifa_base'] * 0.90  # Descuento del 10%
+print("Cantidad de usuarios con cuenta activa, tipo 'subasta' y edad mayor a 60 años:", contador_subasta)
 
-# Filtrar socios por los criterios especificados
-funcional_altura = [socio for socio in socios if socio['rutina'] == "Funcional" and socio['altura'] > 165 and (socio['dni'].endswith('4') or socio['dni'].endswith('5'))]
-musculacion_altura = [socio for socio in socios if socio['rutina'] == "Musculación" and socio['altura'] > 110 and (socio['dni'].endswith('4') or socio['dni'].endswith('5'))]
-
-# Encontrar el socio que realiza "Cardio" con el menor peso
-cardio_menor_peso = None
-for socio in socios:
-    if socio['rutina'] == "Cardio" and (cardio_menor_peso is None or socio['peso'] < cardio_menor_peso['peso']) and (socio['dni'].endswith('4') or socio['dni'].endswith('5')):
-        cardio_menor_peso = socio
-
-# Mostrar los resultados
-print("\nResultados:")
-print(f"Cantidad de socios que realizan 'Funcional' y su altura es superior a 165: {len(funcional_altura)}")
-
-if len(musculacion_altura) > 0:
-    promedio_recaudado = sum(socio['tarifa_final'] for socio in musculacion_altura) / len(musculacion_altura)
-    print(f"Promedio total recaudado de los socios que realizan 'Musculación' y su altura es superior a 110: {promedio_recaudado}")
+if usuario_mas_joven_nombre:
+    print("Nombre y tipo del usuario de menor edad con menos de 300 publicaciones:", usuario_mas_joven_nombre, "(", usuario_mas_joven_tipo, ")")
 else:
-    print("No hay socios que cumplen con los criterios para 'Musculación'.")
+    print("No se encontró ningún usuario con menos de 300 publicaciones.")
 
-if cardio_menor_peso:
-    print(f"El nombre del socio que realiza 'Cardio' de menor peso es {cardio_menor_peso['nombre_completo']} y su altura es {cardio_menor_peso['altura']}")
+if total_publicaciones > 0:
+    porcentaje_inactivo = (publicaciones_inactivas / total_publicaciones) * 100
 else:
-    print("No hay socios que cumplen con los criterios para 'Cardio'.")
+    porcentaje_inactivo = 0
+
+print("Porcentaje de publicaciones inactivas:", porcentaje_inactivo, "%")
+
+if contador_subasta_publicaciones > 0:
+    promedio_edad_subasta = total_edad_subasta / contador_subasta_publicaciones
+else:
+    promedio_edad_subasta = 0
+
+print("Promedio de edad de los usuarios con publicaciones tipo 'subasta':", promedio_edad_subasta, "años")
+
+if productos_inactivos >= servicios_inactivos and productos_inactivos >= subastas_inactivos:
+    tipo_con_mas_inactivas = "producto"
+elif servicios_inactivos >= productos_inactivos and servicios_inactivos >= subastas_inactivos:
+    tipo_con_mas_inactivas = "servicio"
+else:
+    tipo_con_mas_inactivas = "subasta"
+
+print("Tipo con más publicaciones inactivas:", tipo_con_mas_inactivas)
