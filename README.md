@@ -9,31 +9,40 @@ total_edad_subasta = 0
 contador_subasta_publicaciones = 0
 productos_inactivos = 0
 servicios_inactivos = 0
-subastas_inactivas = 0
+subastas_inactivos = 0
 
 while contador <= 10:
     nombre_usuario = input("Nombre del usuario: ")
 
     while True:
-        edad_usuario = int(input("Edad del usuario (entre 18 y 100): "))
-        if 18 <= edad_usuario <= 100:
-            break
-        else:
-            print("La edad no es válida, debe estar entre 18 y 100 años.")
-    
+        try:
+            edad_usuario = int(input("Edad del usuario (entre 18 y 100): "))
+            if 18 <= edad_usuario <= 100:
+                break
+            else:
+                print("La edad no es válida, debe estar entre 18 y 100 años.")
+        except ValueError:
+            print("Por favor, ingrese un número entero válido.")
+
     while True:
-        cantidad_productos = int(input("Cantidad de productos (número entero positivo): "))
-        if cantidad_productos > 0:
-            break
-        else:
-            print("Cantidad inválida, debe ser un número entero positivo.")
-    
+        try:
+            cantidad_productos = int(input("Cantidad de productos (número entero positivo): "))
+            if cantidad_productos > 0:
+                break
+            else:
+                print("Cantidad inválida, debe ser un número entero positivo.")
+        except ValueError:
+            print("Por favor, ingrese un número entero válido.")
+
     while True:
-        numero_publicaciones = int(input("Número de publicaciones (hasta 1000): "))
-        if 1 <= numero_publicaciones <= 1000:
-            break
-        else:
-            print("Número de publicaciones inválido, debe ser entre 1 y 1000.")
+        try:
+            numero_publicaciones = int(input("Número de publicaciones (número entero positivo, hasta 1000): "))
+            if 1 <= numero_publicaciones <= 1000:
+                break
+            else:
+                print("Número de publicaciones inválido, debe ser un número entero positivo hasta 1000.")
+        except ValueError:
+            print("Por favor, ingrese un número entero válido.")
 
     while True:
         tipo_publicacion = input("Tipo de publicación (producto, servicio, subasta): ").lower()
@@ -66,7 +75,7 @@ while contador <= 10:
         elif tipo_publicacion == "servicio":
             servicios_inactivos += numero_publicaciones
         elif tipo_publicacion == "subasta":
-            subastas_inactivas += numero_publicaciones
+            subastas_inactivos += numero_publicaciones
     
     if tipo_publicacion == "subasta":
         total_edad_subasta += edad_usuario
@@ -95,9 +104,9 @@ else:
 
 print("Promedio de edad de los usuarios con publicaciones tipo 'subasta':", promedio_edad_subasta, "años")
 
-if productos_inactivos >= servicios_inactivos and productos_inactivos >= subastas_inactivas:
+if productos_inactivos >= servicios_inactivos and productos_inactivos >= subastas_inactivos:
     tipo_con_mas_inactivas = "producto"
-elif servicios_inactivos >= productos_inactivos and servicios_inactivos >= subastas_inactivas:
+elif servicios_inactivos >= productos_inactivos and servicios_inactivos >= subastas_inactivos:
     tipo_con_mas_inactivas = "servicio"
 else:
     tipo_con_mas_inactivas = "subasta"
