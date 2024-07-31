@@ -15,34 +15,28 @@ while contador <= 10:
     nombre_usuario = input("Nombre del usuario: ")
 
     while True:
-        try:
-            edad_usuario = int(input("Edad del usuario (entre 18 y 100): "))
-            if 18 <= edad_usuario <= 100:
-                break
-            else:
-                print("La edad no es válida, debe estar entre 18 y 100 años.")
-        except ValueError:
-            print("Por favor, ingrese un número entero válido.")
-
+        edad_usuario = input("Edad del usuario (entre 18 y 100): ")
+        if edad_usuario.isdigit() and 18 <= int(edad_usuario) <= 100:
+            edad_usuario = int(edad_usuario)
+            break
+        else:
+            print("La edad no es válida, debe estar entre 18 y 100 años.")
+    
     while True:
-        try:
-            cantidad_productos = int(input("Cantidad de productos (número entero positivo): "))
-            if cantidad_productos > 0:
-                break
-            else:
-                print("Cantidad inválida, debe ser un número entero positivo.")
-        except ValueError:
-            print("Por favor, ingrese un número entero válido.")
-
+        cantidad_productos = input("Cantidad de productos (número entero positivo): ")
+        if cantidad_productos.isdigit() and int(cantidad_productos) > 0:
+            cantidad_productos = int(cantidad_productos)
+            break
+        else:
+            print("Cantidad inválida, debe ser un número entero positivo.")
+    
     while True:
-        try:
-            numero_publicaciones = int(input("Número de publicaciones (número entero positivo, hasta 1000): "))
-            if 1 <= numero_publicaciones <= 1000:
-                break
-            else:
-                print("Número de publicaciones inválido, debe ser un número entero positivo hasta 1000.")
-        except ValueError:
-            print("Por favor, ingrese un número entero válido.")
+        numero_publicaciones = input("Número de publicaciones (número entero positivo, hasta 1000): ")
+        if numero_publicaciones.isdigit() and 1 <= int(numero_publicaciones) <= 1000:
+            numero_publicaciones = int(numero_publicaciones)
+            break
+        else:
+            print("Número de publicaciones inválido, debe ser un número entero positivo hasta 1000.")
 
     while True:
         tipo_publicacion = input("Tipo de publicación (producto, servicio, subasta): ").lower()
